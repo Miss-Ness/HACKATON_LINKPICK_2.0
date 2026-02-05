@@ -1,0 +1,70 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 32px;
+  padding: 32px;
+  border-radius: 24px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(234,240,255,0.7);
+}
+
+.principles {
+  margin: 16px 0 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: rgba(234,240,255,0.85);
+}
+
+.scope h3 {
+  margin: 0 0 10px 0;
+}
+.summary {
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  padding: 12px 0;
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.row:last-child { border-bottom: 0; }
+.label {
+  font-weight: 700;
+}
+
+.team-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.card {
+  padding: 18px;
+  border-radius: 16px;
+}
+.title {
+  font-size: 18px;
+  font-weight: 700;
+}
+.role {
+  font-size: 14px;
+  color: rgba(234,240,255,0.75);
+  margin-bottom: 8px;
+}
+
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+}

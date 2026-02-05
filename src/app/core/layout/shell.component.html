@@ -1,0 +1,53 @@
+<header class="topbar">
+    <mat-toolbar class="toolbar container" color="transparent">
+
+        <a routerLink="/" class="brand">
+            <span class="logo-dot"></span>
+            <span class="brand-name">Hackathon IA & Matching</span>
+            <span class="brand-sub muted">Epitech × Linkpick</span>
+        </a>
+
+        <nav class="nav">
+            <a
+                    routerLink="/"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{ exact: true }">
+                Accueil
+            </a>
+
+            <a routerLink="/chatbot" routerLinkActive="active">
+                Chatbot
+            </a>
+
+            <a routerLink="/about" routerLinkActive="active">
+                À propos
+            </a>
+        </nav>
+
+        <div class="actions">
+            <a
+                    mat-stroked-button
+                    class="pill"
+                    routerLink="/chatbot">
+                Tester le bot
+            </a>
+
+            <a
+                    mat-raised-button
+                    color="primary"
+                    class="pill btn-primary"
+                    routerLink="/about">
+                Découvrir l'équipe
+            </a>
+        </div>
+
+    </mat-toolbar>
+</header>
+
+<main class="main">
+    <router-outlet></router-outlet>
+</main>
+
+<footer class="footer" *ngIf="showFooter">
+    <div class="container footer-inner glass"></div>
+</footer>

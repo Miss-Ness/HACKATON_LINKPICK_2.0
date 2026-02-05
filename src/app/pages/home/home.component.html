@@ -1,0 +1,57 @@
+<section class="section hero">
+    <div class="container hero-grid">
+        <div class="hero-copy">
+            <div class="eyebrow">Produit beta — Matching IA</div>
+            <h1>Optimiser le matching alternance/stage grâce à l’IA</h1>
+            <p class="lead">
+                Un même outil pour connecter durablement <strong>les apprenants</strong>, <strong>les écoles</strong> et <strong>les employeurs</strong>.
+                Le chatbot devient l’interface produit qui collecte, normalise et restitue les informations clés.
+            </p>
+
+            <ul class="pillars">
+                <li *ngFor="let pillar of pillars">
+                    <strong>{{ pillar.title }} :</strong> {{ pillar.detail }}
+                </li>
+            </ul>
+
+            <div class="cta">
+                <a mat-raised-button color="primary" class="pill btn-primary" routerLink="/chatbot">Découvrir le chatbot</a>
+                <a mat-stroked-button class="pill btn-outline" routerLink="/about">Voir l’équipe</a>
+            </div>
+        </div>
+
+        <div class="hero-panel glass">
+            <div class="panel-title">Un flux produit clair</div>
+            <div class="panel-item" *ngFor="let step of flow">
+                <span class="badge">{{ step.id }}</span>
+                <div>
+                    <div class="panel-label">{{ step.title }}</div>
+                    <p class="muted">{{ step.text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section info-section">
+    <div class="container info">
+        <article class="info-card glass">
+            <p class="eyebrow muted">Problématique</p>
+            <h2 class="h2">Aligner trois visions pour fluidifier l’alternance</h2>
+            <div class="info-grid">
+                <article *ngFor="let card of problemCards">
+                    <h3>{{ card.title }}</h3>
+                    <p>{{ card.text }}</p>
+                </article>
+            </div>
+        </article>
+
+        <article class="info-card glass">
+            <p class="eyebrow muted">Objectif du hackathon</p>
+            <h2 class="h2">Un prototype de chatbot orienté produit</h2>
+            <ul class="list">
+                <li *ngFor="let bullet of objectivePoints">{{ bullet }}</li>
+            </ul>
+        </article>
+    </div>
+</section>

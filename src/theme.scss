@@ -1,0 +1,17 @@
+:root {
+  --brand: #4c6ef5;
+  --brand2: #22c55e;
+  --bg: #0b1220;
+  --card: rgba(255, 255, 255, 0.06);
+  --stroke: rgba(255, 255, 255, 0.10);
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: rgba(255,255,255,0.06) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.mat-mdc-raised-button.mat-primary {
+  background: linear-gradient(90deg, var(--brand), #6d28d9) !important;
+}

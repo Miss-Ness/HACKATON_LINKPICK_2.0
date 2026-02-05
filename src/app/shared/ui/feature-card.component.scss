@@ -1,0 +1,30 @@
+.card {
+  padding: 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  transition: transform .15s ease, border-color .15s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,0.18);
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(76,110,245,0.14);
+  border: 1px solid rgba(255,255,255,0.10);
+}
+
+.title {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.text {
+  font-size: 14px;
+  line-height: 1.4;
+}

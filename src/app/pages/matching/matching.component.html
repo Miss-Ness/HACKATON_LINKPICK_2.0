@@ -1,0 +1,52 @@
+<section class="section match-hero">
+    <div class="container match-grid glass">
+        <div>
+            <span class="tag">Vue produit matching</span>
+            <h1>Vue d’ensemble à partager avec les équipes</h1>
+            <p class="muted">
+                Le calcul combine conversation chatbot, parsing du CV, analyse d’offre et référentiel RNCP.
+                Résultat : un indicateur exploitable par les trois acteurs, sans alerter sur “ce qui ne va pas”.
+            </p>
+        </div>
+        <div class="score-card">
+            <div class="label">Alignement global</div>
+            <div class="value">{{ alignmentScore }}%</div>
+            <div class="meter">
+                <div class="bar" [style.width.%]="alignmentScore"></div>
+            </div>
+            <p class="muted">Prêt pour validation conjointe apprenant / école / employeur.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="h2">Insights livrés par acteur</h2>
+        <div class="insight-grid">
+            <article class="card glass" *ngFor="let insight of insights">
+                <div class="card-head">
+                    <mat-icon>{{ insight.icon }}</mat-icon>
+                    <div>
+                        <h3>{{ insight.title }}</h3>
+                        <p class="muted">{{ insight.subtitle }}</p>
+                    </div>
+                </div>
+                <ul>
+                    <li *ngFor="let point of insight.bullets">{{ point }}</li>
+                </ul>
+            </article>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="h2">Prochaines étapes produit</h2>
+        <div class="next-grid">
+            <article class="next glass" *ngFor="let step of nextSteps">
+                <div class="next-title">{{ step.title }}</div>
+                <p class="muted">{{ step.text }}</p>
+            </article>
+        </div>
+    </div>
+</section>

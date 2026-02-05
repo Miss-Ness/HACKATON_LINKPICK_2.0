@@ -1,0 +1,40 @@
+<section class="section about-hero">
+    <div class="container about-grid glass">
+        <div>
+            <p class="eyebrow">À propos</p>
+            <h1>Une équipe produit pour industrialiser le prototype</h1>
+            <p class="muted">
+                Nous avons conçu cette V1 Angular pour démontrer – très concrètement – la valeur du chatbot et
+                du matching. L’objectif est double : donner envie aux sponsors, et faciliter l’intégration côté back.
+            </p>
+
+            <ul class="principles">
+                <li *ngFor="let principle of principles">{{ principle }}</li>
+            </ul>
+        </div>
+
+        <div class="scope">
+            <h3>Périmètre livré</h3>
+            <div class="summary">
+                <div class="row" *ngFor="let item of productScope">
+                    <span class="label">{{ item.label }}</span>
+                    <span>{{ item.detail }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2 class="h2">Membres de l’équipe</h2>
+        <p class="muted">Un noyau produit + tech + data pour accompagner l’intégration back dès la démo.</p>
+        <div class="team-grid">
+            <article class="card glass" *ngFor="let member of team">
+                <div class="title">{{ member.name }}</div>
+                <div class="role">{{ member.role }}</div>
+                <p class="muted">{{ member.focus }}</p>
+            </article>
+        </div>
+    </div>
+</section>
