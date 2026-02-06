@@ -22,29 +22,29 @@ export class AboutComponent {
 
     team: TeamMember[] = [
         {
-            name: 'Léa Dupont',
-            role: 'Product & Design',
-            focus: 'Coordination atelier, maquettes haute fidélité, ton éditorial.',
+            name: 'Nesrine MESSAOUDI',
+            role: 'CSS & HTML',
+            focus: 'Strcturation du site.',
         },
         {
-            name: 'Nassim Benali',
-            role: 'Frontend',
-            focus: 'Architecture Angular, composants standalone, theming Material.',
+            name: 'Mathis ROUSSEL',
+            role: 'SCSS & HTML',
+            focus: 'Apparence et ésthétique.',
         },
         {
-            name: 'Camille Robert',
+            name: 'Jimmy LA',
             role: 'Backend / API',
-            focus: 'Spécifications d’API, sécurisation des échanges école ↔ entreprise.',
+            focus: 'Spécifications d’API. & Link avec le front end',
         },
         {
-            name: 'Idriss Aït',
-            role: 'Data / IA',
-            focus: 'Extraction CV/offres, scoring et explications métier.',
+            name: 'Youcef DJABOU',
+            role: 'Backend',
+            focus: 'Link avec le Frontend',
         },
         {
-            name: 'Sofia El Mansour',
-            role: 'Ops & Delivery',
-            focus: 'Pilotage du planning, intégration avec les équipes école/entreprise.',
+            name: 'Grégoire MINGUEZ',
+            role: 'Angular et Typescrypt',
+            focus: 'programation page dynamique/architecture',
         },
     ];
 
