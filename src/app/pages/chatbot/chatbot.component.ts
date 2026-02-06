@@ -68,7 +68,13 @@ export class ChatbotComponent {
 
     messages: ChatMessage[] = [];
     allJobs: Job[] = [];
-    userProfile: UserProfile = { skills: [] };
+    userProfile: UserProfile = { 
+        skills: [],
+        location: '',
+        education: '',
+        preferences: '',
+        experience: ''
+    };
 
     constructor(
         private snack: MatSnackBar,
@@ -191,6 +197,68 @@ export class ChatbotComponent {
         this.handleUserIntent(content);
     }
 
+    // 🔥 Fake matching manuel
+manualJobMatching() {
+    if (!this.userProfile.skills?.length) {
+        this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: "Je n'ai pas assez d'informations sur tes compétences pour faire un matching 😅",
+            ts: Date.now()
+        });
+        return;
+    }
+
+    const matches = this.allJobs
+        .map(job => {
+            // Compter le nombre de compétences matchées
+            const skillMatchCount = job.skills_required
+                .filter((skill: string) => 
+                    this.userProfile.skills.includes(skill.toLowerCase())
+                ).length;
+
+            // Bonus si localisation correspond
+            const locationBonus = this.userProfile.location && job.location.toLowerCase().includes(this.userProfile.location.toLowerCase()) ? 1 : 0;
+
+            // Bonus si préférence d'entreprise correspond
+            const prefBonus = this.userProfile.preferences && job.type.toLowerCase().includes(this.userProfile.preferences.toLowerCase()) ? 1 : 0;
+
+            const score = skillMatchCount + locationBonus + prefBonus;
+            return { job, score };
+        })
+        .filter(item => item.score > 0) // On garde que les offres pertinentes
+        .sort((a, b) => b.score - a.score) // Tri par score décroissant
+        .slice(0, 5); // Top 5 résultats
+
+    if (matches.length === 0) {
+        this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: "Aucune offre ne correspond exactement à ton profil 😔\nEssaie d'ajouter plus de compétences ou d'élargir tes critères.",
+            ts: Date.now()
+        });
+        return;
+    }
+
+    // Formater le résultat
+    const resultsText = matches.map((m, i) => 
+        `${i + 1}. **${m.job.title}** chez ${m.job.company}\n` +
+        `   📍 ${m.job.location} | ${m.job.type}\n` +
+        `   🔑 Score de matching: ${m.score}`
+    ).join('\n\n');
+
+    this.messages.push({
+        id: crypto.randomUUID(),
+        role: 'bot',
+        text: `🎯 Voici les offres les plus adaptées à ton profil :\n\n${resultsText}`,
+        ts: Date.now(),
+        jobMatches: matches.map(m => m.job)
+    });
+
+    this.saveCurrentConversation();
+    this.scrollToBottom();
+}
+
     private handleSmartResponse(data: any) {
 
         // 1️⃣ Si backend renvoie des jobs
@@ -238,6 +306,11 @@ export class ChatbotComponent {
         // Au lieu de détecter les intentions côté front, 
         // on laisse le backend s'en charger avec l'IA
         this.sendToSmartBackend(userMessage);
+        // Après extraction des compétences
+        this.extractUserProfile(userMessage);
+
+        // Faire un matching manuel
+        this.manualJobMatching();
     }
     
     private sendToSmartBackend(message: string) {
@@ -403,6 +476,53 @@ export class ChatbotComponent {
         }, 700);
 
         input.value = '';
+    }
+
+    private extractUserProfile(message: string) {
+        const lowerMsg = message.toLowerCase();
+        
+        // Extraction de compétences techniques
+        const skillKeywords = [
+            'react', 'vue', 'angular', 'node', 'nodejs', 'python', 'django', 
+            'flutter', 'dart', 'docker', 'kubernetes', 'aws', 'azure', 'gcp',
+            'postgresql', 'mongodb', 'redis', 'typescript', 'javascript',
+            'figma', 'adobe xd', 'ux', 'ui', 'spark', 'kafka', 'airflow',
+            'tensorflow', 'pytorch', 'machine learning', 'ml', 'data science',
+            'cybersécurité', 'pentest', 'linux', 'devops', 'ci/cd'
+        ];
+        
+        const foundSkills = skillKeywords.filter(skill => 
+            lowerMsg.includes(skill)
+        );
+
+        if (foundSkills.length > 0) {
+            this.userProfile.skills = [...new Set([...this.userProfile.skills, ...foundSkills])];
+        }
+        
+        // Extraction de localisation
+        const cities = ['paris', 'lyon', 'nantes', 'bordeaux', 'toulouse', 'marseille', 'lille', 'grenoble', 'remote'];
+        const foundCity = cities.find(city => lowerMsg.includes(city));
+        if (foundCity && !this.userProfile.location) {
+            this.userProfile.location = foundCity;
+        }
+        
+        // Extraction de préférences d'entreprise
+        if (lowerMsg.includes('startup')) {
+            this.userProfile.preferences = 'startup';
+        } else if (lowerMsg.includes('grand groupe') || lowerMsg.includes('grande entreprise')) {
+            this.userProfile.preferences = 'grande entreprise';
+        } else if (lowerMsg.includes('pme')) {
+            this.userProfile.preferences = 'pme';
+        }
+        
+        // Extraction d'expérience
+        const expMatch = lowerMsg.match(/(\d+)\s*(an|année)/);
+        if (expMatch) {
+            this.userProfile.experience = `${expMatch[1]} ans`;
+        }
+        
+        console.log('📊 Profil utilisateur mis à jour:', this.userProfile);
+        this.saveCurrentConversation();
     }
 
     private scrollToBottom() {

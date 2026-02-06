@@ -70,7 +70,6 @@ app.post("/jobs/search", (req, res) => {
   res.json({ jobs: filtered, count: filtered.length });
 });
 
-// Route pour le matching intelligent avec l'IA
 app.post("/jobs/match", async (req, res) => {
   const { userProfile, topN = 3 } = req.body;
   
@@ -78,25 +77,57 @@ app.post("/jobs/match", async (req, res) => {
     return res.json({ error: "Configuration API manquante" });
   }
   
+  // Si le profil est vide, demander plus d'infos
+  if (!userProfile.skills || userProfile.skills.length === 0) {
+    return res.json({ 
+      error: "profile_incomplete",
+      message: "Dis-moi d'abord quelles sont tes compétences ! Par exemple : 'Je connais React, Node.js et PostgreSQL'"
+    });
+  }
+  
   try {
-    // Créer un prompt pour l'IA avec le profil utilisateur et les offres
     const prompt = `
-Tu es un expert en matching emploi/candidat. 
-Voici le profil de l'utilisateur :
-${JSON.stringify(userProfile, null, 2)}
+Tu es un expert en matching emploi/candidat avec 10 ans d'expérience.
 
-Voici les offres d'emploi disponibles :
-${JSON.stringify(jobsData.slice(0, 10), null, 2)}
+**PROFIL DU CANDIDAT:**
+Compétences: ${userProfile.skills.join(', ')}
+Localisation préférée: ${userProfile.location || 'non spécifié'}
+Niveau d'études: ${userProfile.education || 'non spécifié'}
+Préférences entreprise: ${userProfile.preferences || 'non spécifié'}
+Expérience: ${userProfile.experience || 'débutant'}
 
-Analyse et retourne UNIQUEMENT un JSON (sans markdown) avec les ${topN} meilleures offres pour ce profil.
-Format attendu :
+**OFFRES DISPONIBLES:**
+${JSON.stringify(jobsData, null, 2)}
+
+**TA MISSION:**
+Analyse chaque offre et calcule un score de matching de 0 à 100 basé sur :
+1. Correspondance des compétences techniques (50% du score)
+2. Localisation (15% du score)
+3. Type d'entreprise selon préférences (15% du score)
+4. Niveau requis vs profil (10% du score)
+5. Soft skills et culture fit (10% du score)
+
+Pour chaque offre matchée, identifie :
+- Les raisons du bon match (compétences communes, localisation, etc.)
+- Les points d'attention (compétences manquantes, niveau requis supérieur, etc.)
+
+Retourne UNIQUEMENT un JSON (sans markdown, sans backticks) avec les ${topN} meilleures offres triées par score décroissant.
+
+Format attendu:
 {
   "matches": [
     {
-      "job_id": "job_xxx",
+      "job_id": "job_001",
       "score": 85,
-      "reasons": ["Raison 1", "Raison 2"],
-      "concerns": ["Point d'attention 1"]
+      "reasons": [
+        "5 compétences techniques correspondent (React, Node.js, PostgreSQL, Git, REST API)",
+        "Localisation correspond à tes préférences",
+        "Startup dynamique comme tu le souhaites"
+      ],
+      "concerns": [
+        "Compétence Docker recommandée mais non critique",
+        "Niveau Bac+3/4 requis"
+      ]
     }
   ]
 }
@@ -113,7 +144,7 @@ Format attendu :
         body: JSON.stringify({
           model: "llama-3.3-70b-versatile",
           messages: [{ role: "user", content: prompt }],
-          max_tokens: 1000,
+          max_tokens: 2000,
           temperature: 0.3,
         }),
       }
@@ -136,7 +167,7 @@ Format attendu :
     
   } catch (err) {
     console.error("Erreur matching:", err);
-    res.json({ error: "Erreur lors du matching" });
+    res.json({ error: "Erreur lors du matching", details: err.message });
   }
 });
 
@@ -183,47 +214,73 @@ app.post("/chat-smart", async (req, res) => {
       responseData = { jobs: filtered };
       break;
 
-    case "job_recommendation":
-      // Appel à /jobs/match (on peut le faire en interne)
-      const matchPrompt = `
-Tu es un expert en matching emploi/candidat.
-Profil utilisateur: ${JSON.stringify(userProfile, null, 2)}
-
-Offres disponibles: ${JSON.stringify(jobsData.slice(0, 10), null, 2)}
-
-Retourne UNIQUEMENT un JSON (sans markdown) avec les 3 meilleures offres pour ce profil.
-Format: {
-  "matches": [
-    { "job_id": "job_xxx", "score": 85, "reasons": ["..."], "concerns": ["..."] }
-  ]
-}`;
-
-      const matchResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${GROQ_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "llama-3.3-70b-versatile",
-          messages: [{ role: "user", content: matchPrompt }],
-          max_tokens: 1000,
-          temperature: 0.3,
-        }),
-      });
-
-      const matchData = await matchResponse.json();
-      const matchResult = matchData.choices?.[0]?.message?.content.replace(/```json|```/g, "").trim();
-      const matches = JSON.parse(matchResult);
+      case "job_recommendation":
+        // Matching intelligent
+        const { userProfile: profile, topN = 5 } = req.body;
+        
+        if (!profile || !profile.skills || profile.skills.length === 0) {
+          return res.json({ 
+            answer: "Je n'ai pas encore assez d'infos sur ton profil 🤔\n\nDis-moi quelles sont tes compétences !" 
+          });
+        }
+        
+        // Appeler la logique de matching (réutiliser le code de /jobs/match)
+        try {
+          const matchPrompt = `
+      Tu es un expert en matching emploi/candidat avec 10 ans d'expérience.
       
-      responseData = { 
-        matches: matches.matches.map(m => ({
-          ...m,
-          job: jobsData.find(j => j.id === m.job_id)
-        }))
-      };
-      break;
-
+      **PROFIL DU CANDIDAT:**
+      Compétences: ${profile.skills.join(', ')}
+      Localisation: ${profile.location || 'non spécifié'}
+      Préférences: ${profile.preferences || 'non spécifié'}
+      Expérience: ${profile.experience || 'débutant'}
+      
+      **OFFRES DISPONIBLES:**
+      ${JSON.stringify(jobsData, null, 2)}
+      
+      Analyse et retourne les ${topN} meilleures offres avec scores de 0 à 100.
+      
+      Format JSON attendu (sans markdown):
+      {
+        "matches": [
+          {
+            "job_id": "job_xxx",
+            "score": 85,
+            "reasons": ["compétences X matchent", "localisation correspond"],
+            "concerns": ["compétence Y manquante"]
+          }
+        ]
+      }`;
+      
+          const matchResponse = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${GROQ_API_KEY}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              model: "llama-3.3-70b-versatile",
+              messages: [{ role: "user", content: matchPrompt }],
+              max_tokens: 2000,
+              temperature: 0.3,
+            }),
+          });
+      
+          const matchData = await matchResponse.json();
+          const matchResult = matchData.choices?.[0]?.message?.content.replace(/```json|```/g, "").trim();
+          const parsed = JSON.parse(matchResult);
+          
+          const enrichedMatches = parsed.matches.map(m => ({
+            ...m,
+            job: jobsData.find(j => j.id === m.job_id)
+          }));
+          
+          return res.json({ matches: enrichedMatches });
+          
+        } catch (err) {
+          console.error("Erreur matching:", err);
+          return res.json({ answer: "Erreur lors du matching." });
+        }
     case "job_details":
       let targetJob = null;
       
