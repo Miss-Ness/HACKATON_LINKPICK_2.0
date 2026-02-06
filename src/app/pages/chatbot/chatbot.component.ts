@@ -18,6 +18,13 @@ interface ChatMessage {
     ts: number;
 }
 
+interface ChatConversation {
+    id: string;
+    title: string;
+    createdAt: number;
+    messages: ChatMessage[];
+}
+
 @Component({
     standalone: true,
     imports: [
@@ -40,6 +47,11 @@ export class ChatbotComponent {
     input = '';
     isTyping = false;
 
+    // Gestion de l'historique
+    conversations: ChatConversation[] = [];
+    currentConversationId: string | null = null;
+    showSidebar = false;
+
     quickReplies = [
         'Je cherche une alternance dev',
         'Je cherche une alternance data/IA',
@@ -47,45 +59,134 @@ export class ChatbotComponent {
         'Explique-moi mon score',
     ];
 
-    messages: ChatMessage[] = [
-        {
-            id: crypto.randomUUID(),
-            role: 'bot',
-            text:
-                "Salut, je suis le bot du Hackathon. Je peux collecter ton objectif, analyser ton CV/offre, et expliquer le matching.\n\nTu veux commencer par :\n1) ton objectif\n2) ton CV\n3) une offre",
-            ts: Date.now(),
-        },
-    ];
+    messages: ChatMessage[] = [];
 
     constructor(private snack: MatSnackBar) {}
+
+    ngOnInit() {
+        this.loadConversations();
+
+        // Charger la dernière conversation ou en créer une nouvelle
+        if (this.conversations.length > 0) {
+            this.loadConversation(this.conversations[0].id);
+        } else {
+            this.createNewConversation();
+        }
+    }
+
+    // Créer une nouvelle conversation
+    createNewConversation() {
+        const newConv: ChatConversation = {
+            id: crypto.randomUUID(),
+            title: 'Nouvelle conversation',
+            createdAt: Date.now(),
+            messages: [
+                {
+                    id: crypto.randomUUID(),
+                    role: 'bot',
+                    text: "Salut, je suis le bot du Hackathon. Je peux collecter ton objectif, analyser ton CV/offre, et expliquer le matching.\n\nTu veux commencer par :\n1) ton objectif\n2) ton CV\n3) une offre",
+                    ts: Date.now(),
+                },
+            ],
+        };
+        this.conversations.unshift(newConv); // Ajouter au début
+        this.currentConversationId = newConv.id;
+        this.messages = newConv.messages;
+        this.saveConversations();
+        this.scrollToBottom();
+    }
+
+    loadConversation(conversationId: string) {
+        const conv = this.conversations.find(c => c.id === conversationId);
+        if (conv) {
+            this.currentConversationId = conversationId;
+            this.messages = conv.messages;
+            this.scrollToBottom();
+        }
+    }
+
+    deleteConversation(conversationId: string, event?: Event) {
+        event?.stopPropagation();
+        this.conversations = this.conversations.filter(c => c.id !== conversationId);
+        if (this.currentConversationId === conversationId) {
+            if (this.conversations.length > 0) {
+                this.loadConversation(this.conversations[0].id);
+            } else {
+                this.createNewConversation();
+            }
+        }
+        this.saveConversations();
+    }
+
+    renameConversation(conversationId: string, newTitle: string) {
+        const conv = this.conversations.find(c => c.id === conversationId);
+        if (conv) {
+            conv.title = newTitle;
+            this.saveConversations();
+        }
+    }
+
+    // Sauvegarder toutes les conversations
+    private saveConversations() {
+        localStorage.setItem('chat_conversations', JSON.stringify(this.conversations));
+    }
+
+    // Charger toutes les conversations
+    private loadConversations() {
+        const saved = localStorage.getItem('chat_conversations');
+        if (saved) {
+            this.conversations = JSON.parse(saved);
+        }
+    }
+
+    // Sauvegarder les messages de la conversation actuelle
+    private saveCurrentConversation() {
+        const conv = this.conversations.find(c => c.id === this.currentConversationId);
+        if (conv) {
+            conv.messages = this.messages;
+            
+            // Auto-générer un titre basé sur le premier message utilisateur
+            if (conv.title === 'Nouvelle conversation' && this.messages.length >= 2) {
+                const firstUserMsg = this.messages.find(m => m.role === 'user');
+                if (firstUserMsg) {
+                    conv.title = firstUserMsg.text.slice(0, 40) + (firstUserMsg.text.length > 40 ? '...' : '');
+                }
+            }
+            
+            this.saveConversations();
+        }
+    }
+
 
     send(text?: string) {
         const content = (text ?? this.input).trim();
         if (!content) return;
 
-        this.messages.push({
-            id: crypto.randomUUID(),
-            role: 'user',
-            text: content,
-            ts: Date.now(),
-        });
-
+        this.messages.push({ id: crypto.randomUUID(), role: 'user', text: content, ts: Date.now() });
         this.input = '';
+        this.isTyping = true;
+        this.saveCurrentConversation(); // Sauvegarder après chaque message
         this.scrollToBottom();
 
-        this.isTyping = true;
-        const botText = this.mockBot(content);
-
-        setTimeout(() => {
-            this.messages.push({
-                id: crypto.randomUUID(),
-                role: 'bot',
-                text: botText,
-                ts: Date.now(),
+        fetch('http://localhost:3000/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ prompt: content }),
+        })
+            .then(res => res.json())
+            .then(data => {
+                this.messages.push({ id: crypto.randomUUID(), role: 'bot', text: data.answer, ts: Date.now() });
+                this.isTyping = false;
+                this.saveCurrentConversation(); // Sauvegarder après la réponse
+                this.scrollToBottom();
+            })
+            .catch(err => {
+                console.error(err);
+                this.messages.push({ id: crypto.randomUUID(), role: 'bot', text: 'Le bot est indisponible.', ts: Date.now() });
+                this.isTyping = false;
+                this.saveCurrentConversation();
+                this.scrollToBottom();
             });
-            this.isTyping = false;
-            this.scrollToBottom();
-        }, 650);
     }
 
     onKeyDown(ev: KeyboardEvent) {
@@ -96,18 +197,11 @@ export class ChatbotComponent {
     }
 
     reset() {
-        this.messages = [
-            {
-                id: crypto.randomUUID(),
-                role: 'bot',
-                text:
-                    "Reset effectué.\nRepartons de zéro : quel est ton objectif (poste/secteur), ta ville, et ton rythme d'alternance ?",
-                ts: Date.now(),
-            },
-        ];
-        this.input = '';
-        this.isTyping = false;
-        this.scrollToBottom();
+        this.createNewConversation();
+    }
+
+    toggleSidebar() {
+        this.showSidebar = !this.showSidebar;
     }
 
     triggerUpload() {
@@ -151,25 +245,4 @@ export class ChatbotComponent {
         }, 0);
     }
 
-    private mockBot(userText: string): string {
-        const t = userText.toLowerCase();
-
-        if (t.includes('cv')) {
-            return "Ok. Tu peux uploader ton CV en PDF/Doc.\nEnsuite je te pose 3 questions et je sors un score + explications.";
-        }
-        if (t.includes('data') || t.includes('ia')) {
-            return "Nickel. Pour l’alternance data/IA, je vais regarder : Python/SQL, stats, ML, projets.\nTu as déjà fait : pandas, sklearn, notebooks, APIs ?";
-        }
-        if (t.includes('dev')) {
-            return "Dev : compris. Plutôt front, back, fullstack ?\nEt tu préfères Angular/React ou peu importe ?";
-        }
-        if (t.includes('score')) {
-            return "Je peux expliquer le score en 3 blocs :\n1) Hard skills\n2) Soft skills & posture\n3) Contraintes (rythme, localisation)\n\nEnvoie-moi une offre (texte ou lien) et je te fais l’analyse.";
-        }
-        if (t.includes('startup')) {
-            return "Startup : parfait. Je valoriserai autonomie, ownership, projets perso.\nTu acceptes du remote partiel ? Et ton rythme d’alternance ?";
-        }
-
-            return "Reçu.\nPour que je fasse un matching utile :\n- Poste visé\n- Localisation\n- Rythme\n- 3 compétences fortes\nTu me donnes ça ?";
-    }
 }

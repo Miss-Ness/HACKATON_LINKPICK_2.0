@@ -1,80 +1,79 @@
 <section class="section">
     <div class="container">
+        <!-- Sidebar historique (permanente à gauche) -->
+        <div class="history-sidebar glass">
+            <div class="history-header">
+                <h3>💬 Conversations</h3>
+                <button mat-raised-button class="new-chat-btn" (click)="reset()">
+                    Nouveau chat
+                </button>
+            </div>
 
-        <div class="intro glass">
-            <h1 class="intro-title">Hackathon IA & Matching – Epitech × Linkpick</h1>
-            <p class="intro-sub muted">
-                Objectif : optimiser le matching alternance/stage grâce à l’intelligence artificielle, en connectant
-                apprenants, écoles et employeurs.
-            </p>
-
-            <div class="intro-grid">
-                <div class="intro-col">
-                    <div class="intro-h">Problématique</div>
-                    <ul>
-                        <li>L’apprenant peine à valoriser ses compétences</li>
-                        <li>L’école doit garantir le cadre pédagogique (RNCP)</li>
-                        <li>L’employeur cherche un profil adapté à ses besoins métiers</li>
-                    </ul>
-                    <div class="muted">Le succès dépend de l’alignement entre ces trois visions.</div>
+            <div class="history-list">
+                <div *ngFor="let conv of conversations" 
+                     class="history-item"
+                     [class.active]="conv.id === currentConversationId"
+                     (click)="loadConversation(conv.id)">
+                    <div class="history-content">
+                        <div class="history-title">{{ conv.title }}</div>
+                        <div class="history-date muted">{{ conv.createdAt | date:'dd/MM HH:mm' }}</div>
+                    </div>
+                    <button mat-icon-button class="delete-btn" (click)="deleteConversation(conv.id, $event)">
+                        <mat-icon>🗑️</mat-icon>
+                    </button>
                 </div>
 
-                <div class="intro-col">
-                    <div class="intro-h">Prototype attendu</div>
-                    <ul>
-                        <li>Collecter des infos via une conversation naturelle</li>
-                        <li>Traduire CV, offres et RNCP en données exploitables</li>
-                        <li>Expliquer pourquoi un profil correspond (ou non) à une offre</li>
-                    </ul>
+                <div *ngIf="conversations.length === 0" class="empty-state">
+                    Aucune conversation.<br>Créez-en une pour commencer !
                 </div>
             </div>
         </div>
 
-        <div class="chat glass">
-            <div class="chat-body" #scrollEl>
-                <div *ngFor="let m of messages" class="msg" [class.user]="m.role==='user'" [class.bot]="m.role==='bot'">
-                    <div class="bubble">
-                        <pre>{{ m.text }}</pre>
+        <!-- Zone principale -->
+        <div class="main-content">
+
+            <!-- Chat -->
+            <div class="chat glass">
+                <div class="chat-body" #scrollEl>
+                    <div *ngFor="let m of messages" class="msg" [class.user]="m.role==='user'" [class.bot]="m.role==='bot'">
+                        <div class="bubble">
+                            <pre>{{ m.text }}</pre>
+                        </div>
+                    </div>
+                    <div class="typing" *ngIf="isTyping">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        <span class="muted">Le bot réfléchit…</span>
                     </div>
                 </div>
-
-                <div class="typing" *ngIf="isTyping">
-                    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-                    <span class="muted">Le bot réfléchit…</span>
-                </div>
-            </div>
-
-            <mat-divider></mat-divider>
-
-            <div class="chat-input">
-                <mat-form-field appearance="fill" class="field">
-                    <textarea
+                
+                <div class="chat-input">
+                    <button mat-icon-button (click)="triggerUpload()" matTooltip="Uploader un CV">
+                        <mat-icon>📎</mat-icon>
+                    </button>
+                    
+                    <mat-form-field appearance="fill" class="field">
+                        <textarea
                             matInput
                             [(ngModel)]="input"
                             (keydown)="onKeyDown($event)"
                             rows="2"
-                            placeholder="Écris ton message ici"></textarea>
-                </mat-form-field>
-
-                <button mat-raised-button class="send" (click)="send()">
-                    Envoyer
-                </button>
-
-                <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" />
-            </div>
-
-            <div class="chat-footer">
-                <div class="quick">
-                    <button *ngFor="let q of quickReplies" mat-stroked-button class="pill small" (click)="send(q)">
-                        {{ q }}
+                            placeholder="Écris ton message ici..."></textarea>
+                    </mat-form-field>
+                    
+                    <button mat-raised-button class="send" (click)="send()" [disabled]="!input.trim() || isTyping">
+                        Envoyer
                     </button>
+                    <input #fileInput type="file" hidden (change)="onFileSelected($event)" accept=".pdf,.doc,.docx" />
                 </div>
-                <div class="chat-actions">
-                    <button mat-stroked-button class="pill secondary" (click)="triggerUpload()">Uploader un CV</button>
-                    <button mat-stroked-button class="pill secondary" (click)="reset()">Réinitialiser</button>
+                
+                <div class="chat-footer">
+                    <div class="quick">
+                        <button *ngFor="let q of quickReplies" mat-stroked-button class="pill small" (click)="send(q)">
+                            {{ q }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-
     </div>
 </section>
