@@ -1,0 +1,513 @@
+[
+  {
+    "id": "job_001",
+    "title": "Développeur Full Stack React/Node.js",
+    "company": "TechStart Paris",
+    "location": "Paris, France",
+    "type": "Alternance",
+    "duration": "12 mois",
+    "rhythm": "3 jours entreprise / 2 jours école",
+    "description": "Rejoignez une startup en pleine croissance pour développer notre plateforme SaaS B2B. Vous participerez à la conception d'APIs REST, à l'optimisation des performances front-end et à la mise en place de tests automatisés. Stack moderne : React 18, Node.js, PostgreSQL, Docker et AWS. Vous travaillerez en méthodologie Agile avec des sprints de 2 semaines.",
+    "skills_required": ["React", "Node.js", "PostgreSQL", "Git", "REST API", "Docker", "TypeScript"],
+    "soft_skills": ["Autonomie", "Esprit d'équipe", "Curiosité", "Adaptabilité"],
+    "education_level": "Bac+3/4",
+    "salary": "1200-1400€/mois",
+    "benefits": [
+      "Tickets restaurant (11€/jour)",
+      "Télétravail 2j/semaine",
+      "Formation continue (budget 1500€/an)",
+      "MacBook Pro fourni",
+      "Afterworks mensuels",
+      "Mutuelle prise en charge à 100%"
+    ],
+    "company_size": "Startup (15-50)",
+    "sector": "SaaS B2B",
+    "posted_date": "2025-01-15",
+    "contact_email": "recrutement@techstart.fr",
+    "application_url": "https://techstart.fr/careers/fullstack-alternance",
+    "team": "Équipe de 5 développeurs (2 seniors, 3 juniors)",
+    "projects": [
+      "Refonte de la plateforme de gestion client",
+      "Développement de nouvelles features analytics",
+      "Optimisation des performances (temps de chargement divisé par 2)"
+    ],
+    "tech_stack": {
+      "frontend": ["React 18", "TypeScript", "Tailwind CSS", "Redux Toolkit"],
+      "backend": ["Node.js", "Express", "Prisma ORM"],
+      "database": ["PostgreSQL", "Redis"],
+      "devops": ["Docker", "AWS EC2", "GitHub Actions"],
+      "tools": ["VS Code", "Postman", "Figma", "Jira"]
+    },
+    "interview_process": [
+      "Entretien RH (30min)",
+      "Test technique à la maison (2h)",
+      "Entretien technique avec le CTO (1h)",
+      "Rencontre avec l'équipe (30min)"
+    ],
+    "start_date": "Septembre 2025",
+    "remote_policy": "Hybride : 3 jours en présentiel / 2 jours remote",
+    "office_location": "Paris 11ème - Métro Bastille",
+    "company_culture": "Startup dynamique, ambiance jeune, management horizontal, culture du feedback"
+  },
+  {
+    "id": "job_002",
+    "title": "Data Scientist Junior",
+    "company": "DataCorp Analytics",
+    "location": "Lyon, France",
+    "type": "Stage",
+    "duration": "6 mois",
+    "rhythm": "Temps plein",
+    "description": "Intégrez notre équipe Data pour travailler sur des projets d'analyse prédictive et de machine learning dans le secteur bancaire. Vous participerez à la construction de modèles de scoring crédit, détection de fraude et recommandation personnalisée. Formation assurée sur les outils internes et les méthodologies ML. Possibilité d'embauche en CDI à l'issue du stage.",
+    "skills_required": ["Python", "Pandas", "Scikit-learn", "SQL", "Machine Learning", "Jupyter"],
+    "soft_skills": ["Rigueur", "Analyse", "Communication", "Curiosité scientifique"],
+    "education_level": "Bac+4/5",
+    "salary": "800-1000€/mois",
+    "benefits": [
+      "Carte déjeuner (10€/jour)",
+      "Environnement moderne",
+      "Accès à des formations Coursera/DataCamp",
+      "Remboursement transport à 50%",
+      "Événements tech internes"
+    ],
+    "company_size": "PME (50-200)",
+    "sector": "Conseil Data",
+    "posted_date": "2025-01-20",
+    "contact_email": "jobs@datacorp.fr",
+    "application_url": "https://datacorp.fr/careers/data-scientist-stage",
+    "team": "Équipe Data de 8 personnes (Data Scientists, Data Engineers, ML Engineers)",
+    "projects": [
+      "Modèle de détection de fraude bancaire (precision 94%)",
+      "Système de recommandation produits financiers",
+      "Dashboard analytics temps réel avec Streamlit"
+    ],
+    "tech_stack": {
+      "languages": ["Python", "SQL", "R"],
+      "ml_frameworks": ["Scikit-learn", "TensorFlow", "XGBoost"],
+      "data_tools": ["Pandas", "NumPy", "Matplotlib", "Seaborn"],
+      "databases": ["PostgreSQL", "MongoDB"],
+      "cloud": ["AWS SageMaker", "S3"],
+      "tools": ["Jupyter", "Git", "Docker", "Airflow"]
+    },
+    "interview_process": [
+      "Entretien RH (30min)",
+      "Cas pratique Data (analyse de dataset + présentation)",
+      "Entretien technique avec Lead Data Scientist (1h)",
+      "Décision sous 1 semaine"
+    ],
+    "start_date": "Mars-Avril 2025",
+    "remote_policy": "100% présentiel (stage)",
+    "office_location": "Lyon Part-Dieu - À 5min de la gare",
+    "company_culture": "Culture data-driven, projets variés, mentorat assuré"
+  },
+  {
+    "id": "job_003",
+    "title": "Développeur Mobile Flutter",
+    "company": "AppFactory",
+    "location": "Remote (France)",
+    "type": "Alternance",
+    "duration": "24 mois",
+    "rhythm": "4 jours entreprise / 1 jour école",
+    "description": "Développez des applications mobiles cross-platform pour nos clients (e-commerce, santé, finance). Vous travaillerez sur toute la chaîne : de la conception UI/UX jusqu'au déploiement sur les stores. Projets variés avec des technologies modernes : Flutter 3, Firebase, Clean Architecture. Équipe 100% remote avec réunions quotidiennes en visio et rassemblements trimestriels.",
+    "skills_required": ["Flutter", "Dart", "Firebase", "REST API", "Git", "State Management"],
+    "soft_skills": ["Créativité", "Travail en équipe", "Réactivité", "Autonomie"],
+    "education_level": "Bac+3/4",
+    "salary": "1100-1300€/mois",
+    "benefits": [
+      "100% remote (France uniquement)",
+      "MacBook Pro + écran externe fournis",
+      "Budget setup home office (500€)",
+      "Événements team trimestriels (Paris, Lyon, Nantes)",
+      "Formation Flutter avancée",
+      "Carte Swile (10€/jour)"
+    ],
+    "company_size": "Startup (10-30)",
+    "sector": "Mobile Apps",
+    "posted_date": "2025-01-10",
+    "contact_email": "hiring@appfactory.io",
+    "application_url": "https://appfactory.io/join-us/flutter-dev",
+    "team": "Équipe de 6 développeurs Flutter (remote-first)",
+    "projects": [
+      "App e-commerce avec 50k+ utilisateurs actifs",
+      "App santé connectée (IoT + BLE)",
+      "App de gestion de tâches collaborative"
+    ],
+    "tech_stack": {
+      "mobile": ["Flutter 3.x", "Dart", "Riverpod", "Bloc"],
+      "backend": ["Firebase", "Supabase", "REST APIs"],
+      "design": ["Figma", "Material Design", "Custom UI"],
+      "ci_cd": ["Fastlane", "Codemagic", "App Store Connect"],
+      "tools": ["VS Code", "Android Studio", "Git", "Jira"]
+    },
+    "interview_process": [
+      "Entretien RH visio (30min)",
+      "Test technique Flutter (3h max)",
+      "Entretien technique + code review (1h)",
+      "Rencontre avec le fondateur (30min)"
+    ],
+    "start_date": "Septembre 2025 ou Janvier 2026",
+    "remote_policy": "100% remote (réunions daily à 10h)",
+    "office_location": "Pas de bureau physique - Remote France",
+    "company_culture": "Remote-first, communication asynchrone (Slack/Notion), liberté d'organisation"
+  },
+  {
+    "id": "job_004",
+    "title": "Ingénieur DevOps",
+    "company": "CloudTech Solutions",
+    "location": "Nantes, France",
+    "type": "Alternance",
+    "duration": "12 mois",
+    "rhythm": "3 jours entreprise / 2 jours école",
+    "description": "Rejoignez notre équipe Infrastructure pour gérer et automatiser nos déploiements multi-cloud (AWS, Azure, GCP). Vous travaillerez sur l'amélioration continue de nos pipelines CI/CD, la conteneurisation des applications et le monitoring des infrastructures. Formation progressive sur Kubernetes, Terraform et les pratiques DevOps. Ambiance technique avec des challenges stimulants.",
+    "skills_required": ["Docker", "Kubernetes", "AWS", "Jenkins", "Linux", "Terraform", "Python/Bash"],
+    "soft_skills": ["Résolution de problèmes", "Organisation", "Proactivité", "Esprit d'équipe"],
+    "education_level": "Bac+4/5",
+    "salary": "1300-1500€/mois",
+    "benefits": [
+      "Formations certifiantes AWS/Azure (prise en charge 100%)",
+      "Flex office (choix des horaires 8h-19h)",
+      "Prime annuelle sur objectifs (jusqu'à 500€)",
+      "Télétravail 2j/semaine",
+      "Tickets restaurant (12€/jour)",
+      "Matériel au choix (Linux/Mac/Windows)"
+    ],
+    "company_size": "ESN (200-500)",
+    "sector": "Cloud Services",
+    "posted_date": "2025-01-18",
+    "contact_email": "recrutement@cloudtech.fr",
+    "application_url": "https://cloudtech.fr/careers/devops-alternance",
+    "team": "Équipe DevOps de 12 personnes répartie sur 3 squads client",
+    "projects": [
+      "Migration infrastructure on-premise vers AWS",
+      "Mise en place Kubernetes + Helm pour microservices",
+      "Automatisation déploiements avec Terraform + Ansible",
+      "Monitoring avec Prometheus + Grafana"
+    ],
+    "tech_stack": {
+      "cloud": ["AWS (EC2, S3, RDS, Lambda)", "Azure", "GCP"],
+      "containers": ["Docker", "Kubernetes", "Helm"],
+      "ci_cd": ["Jenkins", "GitLab CI", "ArgoCD"],
+      "iac": ["Terraform", "Ansible", "CloudFormation"],
+      "monitoring": ["Prometheus", "Grafana", "ELK Stack"],
+      "languages": ["Python", "Bash", "Go"]
+    },
+    "interview_process": [
+      "Entretien RH (30min)",
+      "Test technique DevOps (à la maison, 3h)",
+      "Entretien technique avec Ops Lead (1h)",
+      "Rencontre avec l'équipe infrastructure (30min)"
+    ],
+    "start_date": "Septembre 2025",
+    "remote_policy": "Hybride : 3j présentiel / 2j remote",
+    "office_location": "Nantes - Quartier Euronantes (Tramway ligne 1)",
+    "company_culture": "ESN moderne, culture DevOps forte, partage de connaissances (tech talks hebdo)"
+  },
+  {
+    "id": "job_005",
+    "title": "Développeur Backend Python/Django",
+    "company": "FinTech Innovations",
+    "location": "Bordeaux, France",
+    "type": "Alternance",
+    "duration": "18 mois",
+    "rhythm": "3 jours entreprise / 2 jours école",
+    "description": "Développez des APIs robustes et scalables pour notre plateforme de paiement fintech. Vous travaillerez sur des fonctionnalités critiques (transactions, webhooks, API bancaires) avec des enjeux de sécurité et de performance. Stack Python moderne avec Django REST Framework, Celery pour l'asynchrone, et PostgreSQL. Code review systématique et pratiques TDD/BDD encouragées.",
+    "skills_required": ["Python", "Django", "Django REST Framework", "PostgreSQL", "Redis", "REST API", "Git"],
+    "soft_skills": ["Rigueur", "Esprit d'équipe", "Apprentissage rapide", "Attention aux détails"],
+    "education_level": "Bac+3/4",
+    "salary": "1200-1400€/mois",
+    "benefits": [
+      "Mutuelle premium prise en charge à 100%",
+      "RTT (12 jours/an)",
+      "Afterworks mensuels",
+      "Budget formation (Udemy, Pluralsight)",
+      "Tickets restaurant (11€/jour)",
+      "Prime de cooptation (1000€)"
+    ],
+    "company_size": "Scale-up (50-100)",
+    "sector": "FinTech",
+    "posted_date": "2025-01-12",
+    "contact_email": "careers@fintech-innov.com",
+    "application_url": "https://fintech-innov.com/join/backend-python",
+    "team": "Squad Backend de 7 développeurs (4 seniors, 3 juniors)",
+    "projects": [
+      "API de paiement instantané (SEPA Instant)",
+      "Système de webhooks temps réel avec RabbitMQ",
+      "Dashboard admin avec Django + Celery",
+      "Intégration API bancaires (Stripe, Mangopay)"
+    ],
+    "tech_stack": {
+      "backend": ["Python 3.11", "Django 4.2", "Django REST Framework", "Celery"],
+      "database": ["PostgreSQL", "Redis"],
+      "messaging": ["RabbitMQ", "Kafka"],
+      "api": ["REST", "GraphQL (Apollo)", "Webhooks"],
+      "testing": ["pytest", "unittest", "Postman"],
+      "devops": ["Docker", "Kubernetes", "CI/CD GitLab"]
+    },
+    "interview_process": [
+      "Entretien RH + culture fit (45min)",
+      "Test technique Python/Django (4h max, à la maison)",
+      "Code review + discussion technique (1h30)",
+      "Rencontre avec le CTO et l'équipe (45min)"
+    ],
+    "start_date": "Septembre 2025",
+    "remote_policy": "Hybride : 3j bureau / 2j remote",
+    "office_location": "Bordeaux - Chartrons (proche tram C)",
+    "company_culture": "Scale-up en croissance, culture tech forte, code review obligatoire, pair programming encouragé"
+  },
+  {
+    "id": "job_006",
+    "title": "Analyste Cybersécurité",
+    "company": "SecureIT France",
+    "location": "Lille, France",
+    "type": "Alternance",
+    "duration": "12 mois",
+    "rhythm": "4 jours entreprise / 1 jour école",
+    "description": "Participez activement à la sécurisation des infrastructures de nos clients : pentests, audits de sécurité, analyse de vulnérabilités, veille cyber. Formation progressive sur les outils professionnels (Burp Suite, Metasploit, Nessus, SIEM). Vous serez accompagné par des experts certifiés (OSCP, CEH) et travaillerez sur des missions variées dans différents secteurs (banque, santé, industrie).",
+    "skills_required": ["Sécurité réseau", "Pentesting", "Linux", "Python", "SIEM", "Firewall", "Wireshark"],
+    "soft_skills": ["Rigueur", "Discrétion", "Curiosité technique", "Analyse", "Communication"],
+    "education_level": "Bac+3/4",
+    "salary": "1100-1300€/mois",
+    "benefits": [
+      "Certifications offertes (CEH, CompTIA Security+)",
+      "Participation à des conférences sécu (LeHack, SSTIC)",
+      "Horaires flexibles",
+      "Télétravail 1j/semaine",
+      "Budget formation continue (2000€/an)",
+      "Tickets restaurant (10€/jour)"
+    ],
+    "company_size": "PME (30-100)",
+    "sector": "Cybersécurité",
+    "posted_date": "2025-01-22",
+    "contact_email": "jobs@secureit.fr",
+    "application_url": "https://secureit.fr/careers/analyste-cyber",
+    "team": "Équipe Pentesting de 6 consultants + 2 analystes SOC",
+    "projects": [
+      "Pentests applicatifs (web, mobile, API)",
+      "Audits d'infrastructure (Active Directory, réseau)",
+      "Analyse de malwares et incidents de sécurité",
+      "Mise en place de SOC pour clients"
+    ],
+    "tech_stack": {
+      "pentest": ["Burp Suite", "Metasploit", "Nmap", "Wireshark", "John the Ripper"],
+      "siem": ["Splunk", "ELK Stack", "Wazuh"],
+      "scripting": ["Python", "Bash", "PowerShell"],
+      "os": ["Kali Linux", "Parrot OS", "Windows Server"],
+      "certifications": ["CEH", "OSCP", "CompTIA Security+", "ISO 27001"]
+    },
+    "interview_process": [
+      "Entretien RH (30min)",
+      "QCM technique cybersécurité",
+      "Cas pratique pentest (CTF-style, 2h)",
+      "Entretien avec le Lead Security (1h)"
+    ],
+    "start_date": "Septembre 2025",
+    "remote_policy": "Présentiel 4j (missions client) + 1j remote possible",
+    "office_location": "Lille - Euralille (métro ligne 2)",
+    "company_culture": "PME spécialisée cyber, ambiance tech, passion sécurité, veille permanente"
+  },
+  {
+    "id": "job_007",
+    "title": "UX/UI Designer",
+    "company": "Creative Studio",
+    "location": "Paris, France",
+    "type": "Stage",
+    "duration": "4 mois",
+    "rhythm": "Temps plein",
+    "description": "Concevez des interfaces utilisateur modernes et engageantes pour nos clients (startups, PME, grands groupes). Vous participerez à toutes les phases : recherche utilisateur, wireframing, prototypage haute-fidélité, tests d'usabilité, design system. Utilisation intensive de Figma, collaboration étroite avec les développeurs. Environnement créatif et bienveillant, idéal pour apprendre les méthodologies UX (Design Thinking, Lean UX).",
+    "skills_required": ["Figma", "Adobe XD", "Prototypage", "Design System", "User Research", "Wireframing"],
+    "soft_skills": ["Créativité", "Empathie", "Communication", "Esprit d'équipe", "Curiosité"],
+    "education_level": "Bac+3/4",
+    "salary": "700-900€/mois",
+    "benefits": [
+      "Matériel Apple fourni (MacBook Pro + iPad)",
+      "Flex time (horaires aménageables)",
+      "Ambiance startup créative",
+      "Accès formations Figma/UX",
+      "Carte déjeuner (9€/jour)",
+      "Afterworks créatifs"
+    ],
+    "company_size": "Startup (5-15)",
+    "sector": "Design",
+    "posted_date": "2025-01-25",
+    "contact_email": "hello@creativestudio.fr",
+    "application_url": "https://creativestudio.fr/careers/ux-ui-stage",
+    "team": "Équipe de 3 designers (Lead Designer + 2 UX/UI Designers)",
+    "projects": [
+      "Refonte UX d'une app fintech (20k utilisateurs)",
+      "Design system pour SaaS B2B",
+      "Prototypes interactifs pour levées de fonds startup",
+      "Tests utilisateurs et A/B testing"
+    ],
+    "tech_stack": {
+      "design": ["Figma", "Adobe XD", "Sketch", "InVision"],
+      "prototyping": ["Figma Prototyping", "Principle", "ProtoPie"],
+      "research": ["Maze", "Hotjar", "Google Analytics"],
+      "collaboration": ["FigJam", "Miro", "Notion"],
+      "dev_handoff": ["Zeplin", "Figma Dev Mode"]
+    },
+    "interview_process": [
+      "Entretien RH + présentation portfolio (45min)",
+      "Cas pratique UX : wireframes + justifications (1h30)",
+      "Rencontre avec l'équipe design (30min)"
+    ],
+    "start_date": "Mars-Avril 2025",
+    "remote_policy": "Présentiel privilégié (stage d'apprentissage)",
+    "office_location": "Paris 10ème - Canal Saint-Martin",
+    "company_culture": "Startup créative, ambiance décontractée, passion design, projets variés"
+  },
+  {
+    "id": "job_008",
+    "title": "Data Engineer",
+    "company": "BigData Corp",
+    "location": "Toulouse, France",
+    "type": "Alternance",
+    "duration": "24 mois",
+    "rhythm": "3 jours entreprise / 2 jours école",
+    "description": "Construisez et optimisez des pipelines de données massives pour nos clients industriels (aéronautique, énergie, retail). Technologies Big Data : Apache Spark, Kafka, Airflow, AWS. Vous travaillerez sur l'ingestion, transformation et orchestration de données à grande échelle (plusieurs TB/jour). Formation assurée sur les architectures Data Lake/Lakehouse et les bonnes pratiques DataOps.",
+    "skills_required": ["Python", "Apache Spark", "Kafka", "Airflow", "SQL", "AWS", "Scala"],
+    "soft_skills": ["Rigueur", "Résolution de problèmes", "Esprit analytique", "Collaboration"],
+    "education_level": "Bac+4/5",
+    "salary": "1400-1600€/mois",
+    "benefits": [
+      "Formations Big Data certifiantes (Databricks, AWS)",
+      "Prime projet (jusqu'à 15% du salaire annuel)",
+      "Télétravail 2j/semaine",
+      "Mutuelle famille prise en charge",
+      "Tickets restaurant (13€/jour)",
+      "Participation aux événements Data (Spark Summit, Data Days)"
+    ],
+    "company_size": "Grande entreprise (500+)",
+    "sector": "Big Data",
+    "posted_date": "2025-01-08",
+    "contact_email": "recruitment@bigdatacorp.fr",
+    "application_url": "https://bigdatacorp.fr/jobs/data-engineer-alternance",
+    "team": "Équipe Data Engineering de 15+ personnes (Data Engineers, Architects)",
+    "projects": [
+      "Data Lake aéronautique (capteurs IoT + prédictif)",
+      "Pipeline temps réel Kafka → Spark Streaming → S3",
+      "Orchestration ETL avec Airflow (100+ DAGs)",
+      "Migration on-premise vers AWS (EMR, Glue, Redshift)"
+    ],
+    "tech_stack": {
+      "big_data": ["Apache Spark (PySpark, Scala)", "Kafka", "Hadoop", "Hive"],
+      "orchestration": ["Apache Airflow", "Luigi", "Dagster"],
+      "cloud": ["AWS (EMR, Glue, S3, Redshift, Athena)", "Databricks"],
+      "languages": ["Python", "Scala", "SQL"],
+      "databases": ["PostgreSQL", "Cassandra", "MongoDB"],
+      "tools": ["Git", "Docker", "Terraform", "Jupyter"]
+    },
+    "interview_process": [
+      "Entretien RH (30min)",
+      "Test technique Data Engineering (SQL + Python/PySpark, 3h)",
+      "Entretien technique avec Data Architect (1h30)",
+      "Rencontre avec le manager et l'équipe (45min)"
+    ],
+    "start_date": "Septembre 2025",
+    "remote_policy": "Hybride : 3j bureau / 2j remote",
+    "office_location": "Toulouse - Quartier Compans-Caffarelli",
+    "company_culture": "Grande entreprise tech, projets stratégiques, culture data-driven, mentorat senior"
+  },
+  {
+    "id": "job_009",
+    "title": "Développeur Front-end Vue.js",
+    "company": "WebAgency Pro",
+    "location": "Marseille, France",
+    "type": "Alternance",
+    "duration": "12 mois",
+    "rhythm": "3 jours entreprise / 2 jours école",
+    "description": "Développez des sites web modernes et performants pour nos clients e-commerce avec Vue.js 3, Nuxt.js et Tailwind CSS. Vous travaillerez sur des projets variés : boutiques en ligne, sites vitrine, applications web métier. Collaboration directe avec les designers (Figma) et intégration d'APIs REST. Ambiance agence web dynamique avec des deadlines motivantes et des technologies à jour.",
+    "skills_required": ["Vue.js", "Nuxt.js", "Tailwind CSS", "JavaScript", "Git", "HTML/CSS", "REST API"],
+    "soft_skills": ["Créativité", "Souci du détail", "Autonomie", "Gestion du temps"],
+    "education_level": "Bac+3",
+    "salary": "1000-1200€/mois",
+    "benefits": [
+      "Projets variés (e-commerce, corporate, SaaS)",
+      "Environnement jeune et dynamique",
+      "Formation continue (Vue School, Frontend Masters)",
+      "Flex office",
+      "Tickets restaurant (9€/jour)",
+      "Teambuilding trimestriel"
+    ],
+    "company_size": "PME (20-50)",
+    "sector": "Web Agency",
+    "posted_date": "2025-01-17",
+    "contact_email": "jobs@webagency.fr",
+    "application_url": "https://webagency.fr/careers/frontend-vuejs",
+    "team": "Équipe Front de 6 développeurs (React, Vue, Angular)",
+    "projects": [
+      "Refonte e-commerce Shopify + Vue.js (500+ produits)",
+      "Application web de gestion de stock (Nuxt 3 + Supabase)",
+      "Sites vitrine corporate avec CMS headless (Strapi + Nuxt)",
+      "PWA mobile-first pour client retail"
+    ],
+    "tech_stack": {
+      "frontend": ["Vue.js 3", "Nuxt.js 3", "Composition API", "Pinia"],
+      "styling": ["Tailwind CSS", "SCSS", "CSS Modules"],
+      "tools": ["Vite", "Webpack", "ESLint", "Prettier"],
+      "cms": ["Strapi", "Contentful", "Shopify"],
+      "api": ["Axios", "REST", "GraphQL"],
+      "testing": ["Vitest", "Cypress"]
+    },
+    "interview_process": [
+      "Entretien RH (30min)",
+      "Test technique Vue.js (intégration maquette Figma, 3h)",
+      "Entretien technique + code review (1h)",
+      "Rencontre avec le responsable technique (30min)"
+    ],
+    "start_date": "Septembre 2025",
+    "remote_policy": "Hybride : 3j bureau / 2j remote après 3 mois",
+    "office_location": "Marseille - Vieux-Port (métro ligne 1)",
+    "company_culture": "Agence web moderne, projets clients variés, méthodologie agile, ambiance conviviale"
+  },
+  {
+    "id": "job_010",
+    "title": "Développeur IA/Machine Learning",
+    "company": "AI Lab Research",
+    "location": "Grenoble, France",
+    "type": "Stage",
+    "duration": "6 mois",
+    "rhythm": "Temps plein",
+    "description": "Rejoignez notre laboratoire de recherche en IA pour travailler sur des projets de NLP (traitement du langage naturel) et Computer Vision (vision par ordinateur). Vous participerez au développement de modèles deep learning avec TensorFlow, PyTorch et Hugging Face Transformers. Projets potentiels : chatbots, reconnaissance d'images, génération de texte. Environnement académique avec possibilité de publications scientifiques.",
+    "skills_required": ["Python", "TensorFlow", "PyTorch", "NLP", "Computer Vision", "Scikit-learn", "Deep Learning"],
+    "soft_skills": ["Curiosité scientifique", "Rigueur", "Travail en équipe", "Esprit de recherche"],
+    "education_level": "Bac+5 (Master/École d'ingé)",
+    "salary": "1000-1200€/mois",
+    "benefits": [
+      "Recherche de pointe en IA",
+      "Possibilité de publications (conférences NeurIPS, ICLR, CVPR)",
+      "Matériel GPU fourni (NVIDIA A100)",
+      "Accès cluster de calcul haute performance",
+      "Environnement académique stimulant",
+      "Carte déjeuner (8€/jour)"
+    ],
+    "company_size": "Laboratoire (10-30)",
+    "sector": "R&D IA",
+    "posted_date": "2025-01-05",
+    "contact_email": "research@ailab.fr",
+    "application_url": "https://ailab.fr/internships/ml-research",
+    "team": "Équipe de 5 chercheurs PhD + 3 ingénieurs ML",
+    "projects": [
+      "Modèle de génération de texte avec GPT-style transformers",
+      "Classification d'images médicales avec CNN (dataset 100k+ images)",
+      "Chatbot multilingue avec BERT fine-tuning",
+      "Détection d'objets temps réel avec YOLO v8"
+    ],
+    "tech_stack": {
+      "frameworks": ["PyTorch", "TensorFlow", "Keras", "JAX"],
+      "nlp": ["Hugging Face Transformers", "spaCy", "NLTK", "Gensim"],
+      "cv": ["OpenCV", "Albumentations", "YOLO", "Detectron2"],
+      "tools": ["Jupyter", "Weights & Biases", "MLflow", "DVC"],
+      "cloud": ["AWS SageMaker", "Google Colab Pro", "Azure ML"],
+      "languages": ["Python", "CUDA (notions)"]
+    },
+    "interview_process": [
+      "Entretien RH + présentation du labo (30min)",
+      "Présentation de projets ML personnels (45min)",
+      "Entretien technique avec chercheurs (1h)",
+      "Discussion projet de stage (30min)"
+    ],
+    "start_date": "Avril-Mai 2025",
+    "remote_policy": "Hybride : 4j labo / 1j remote (après intégration)",
+    "office_location": "Grenoble - Campus universitaire",
+    "company_culture": "Laboratoire de recherche, environnement académique, passion IA, publications encouragées"
+  }
+]

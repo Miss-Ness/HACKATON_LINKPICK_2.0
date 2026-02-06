@@ -1,13 +1,15 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ApiService, Job, UserProfile } from '../../services/api_service';
 
 type Role = 'bot' | 'user';
 
@@ -16,6 +18,7 @@ interface ChatMessage {
     role: Role;
     text: string;
     ts: number;
+    jobMatches?: any[];  // Pour afficher des offres dans le chat
 }
 
 interface ChatConversation {
@@ -23,10 +26,12 @@ interface ChatConversation {
     title: string;
     createdAt: number;
     messages: ChatMessage[];
+    userProfile?: UserProfile;  // Profil extrait de la conversation
 }
 
 @Component({
     standalone: true,
+    selector: 'app-chatbot',
     imports: [
         CommonModule,
         FormsModule,
@@ -36,6 +41,8 @@ interface ChatConversation {
         MatDividerModule,
         MatSnackBarModule,
         MatFormFieldModule,
+        MatTooltipModule,
+        MatProgressSpinnerModule,
     ],
     templateUrl: './chatbot.component.html',
     styleUrls: ['./chatbot.component.scss'],
@@ -46,27 +53,32 @@ export class ChatbotComponent {
 
     input = '';
     isTyping = false;
+    showSidebar = false;
+    isLoadingJobs = false;
 
-    // Gestion de l'historique
     conversations: ChatConversation[] = [];
     currentConversationId: string | null = null;
-    showSidebar = false;
 
     quickReplies = [
         'Je cherche une alternance dev',
-        'Je cherche une alternance data/IA',
+        'Trouve-moi des offres React à Paris',
         'Je veux améliorer mon CV',
-        'Explique-moi mon score',
+        'Montre-moi toutes les offres disponibles',
     ];
 
     messages: ChatMessage[] = [];
+    allJobs: Job[] = [];
+    userProfile: UserProfile = { skills: [] };
 
-    constructor(private snack: MatSnackBar) {}
+    constructor(
+        private snack: MatSnackBar,
+        private api: ApiService
+    ) {}
 
     ngOnInit() {
         this.loadConversations();
-
-        // Charger la dernière conversation ou en créer une nouvelle
+        this.loadAllJobs();
+        
         if (this.conversations.length > 0) {
             this.loadConversation(this.conversations[0].id);
         } else {
@@ -74,7 +86,19 @@ export class ChatbotComponent {
         }
     }
 
-    // Créer une nouvelle conversation
+    // Charger toutes les offres au démarrage
+    loadAllJobs() {
+        this.api.getAllJobs().subscribe({
+            next: (response) => {
+                this.allJobs = response.jobs;
+                console.log(`✅ ${this.allJobs.length} offres chargées`);
+            },
+            error: (err) => {
+                console.error('Erreur chargement offres:', err);
+            }
+        });
+    }
+
     createNewConversation() {
         const newConv: ChatConversation = {
             id: crypto.randomUUID(),
@@ -84,14 +108,17 @@ export class ChatbotComponent {
                 {
                     id: crypto.randomUUID(),
                     role: 'bot',
-                    text: "Salut, je suis le bot du Hackathon. Je peux collecter ton objectif, analyser ton CV/offre, et expliquer le matching.\n\nTu veux commencer par :\n1) ton objectif\n2) ton CV\n3) une offre",
+                    text: "Salut ! Je suis ton assistant LinkPick 🚀\n\nJe peux t'aider à :\n• Trouver des offres d'alternance/stage\n• Analyser ton CV\n• Matcher ton profil avec les meilleures opportunités\n\nPar quoi veux-tu commencer ?",
                     ts: Date.now(),
                 },
             ],
+            userProfile: { skills: [] }
         };
-        this.conversations.unshift(newConv); // Ajouter au début
+
+        this.conversations.unshift(newConv);
         this.currentConversationId = newConv.id;
         this.messages = newConv.messages;
+        this.userProfile = newConv.userProfile || { skills: [] };
         this.saveConversations();
         this.scrollToBottom();
     }
@@ -101,13 +128,16 @@ export class ChatbotComponent {
         if (conv) {
             this.currentConversationId = conversationId;
             this.messages = conv.messages;
+            this.userProfile = conv.userProfile || { skills: [] };
             this.scrollToBottom();
         }
     }
 
     deleteConversation(conversationId: string, event?: Event) {
         event?.stopPropagation();
+        
         this.conversations = this.conversations.filter(c => c.id !== conversationId);
+        
         if (this.currentConversationId === conversationId) {
             if (this.conversations.length > 0) {
                 this.loadConversation(this.conversations[0].id);
@@ -115,23 +145,14 @@ export class ChatbotComponent {
                 this.createNewConversation();
             }
         }
+        
         this.saveConversations();
     }
 
-    renameConversation(conversationId: string, newTitle: string) {
-        const conv = this.conversations.find(c => c.id === conversationId);
-        if (conv) {
-            conv.title = newTitle;
-            this.saveConversations();
-        }
-    }
-
-    // Sauvegarder toutes les conversations
     private saveConversations() {
         localStorage.setItem('chat_conversations', JSON.stringify(this.conversations));
     }
 
-    // Charger toutes les conversations
     private loadConversations() {
         const saved = localStorage.getItem('chat_conversations');
         if (saved) {
@@ -139,13 +160,12 @@ export class ChatbotComponent {
         }
     }
 
-    // Sauvegarder les messages de la conversation actuelle
     private saveCurrentConversation() {
         const conv = this.conversations.find(c => c.id === this.currentConversationId);
         if (conv) {
             conv.messages = this.messages;
+            conv.userProfile = this.userProfile;
             
-            // Auto-générer un titre basé sur le premier message utilisateur
             if (conv.title === 'Nouvelle conversation' && this.messages.length >= 2) {
                 const firstUserMsg = this.messages.find(m => m.role === 'user');
                 if (firstUserMsg) {
@@ -157,7 +177,6 @@ export class ChatbotComponent {
         }
     }
 
-
     send(text?: string) {
         const content = (text ?? this.input).trim();
         if (!content) return;
@@ -165,28 +184,180 @@ export class ChatbotComponent {
         this.messages.push({ id: crypto.randomUUID(), role: 'user', text: content, ts: Date.now() });
         this.input = '';
         this.isTyping = true;
-        this.saveCurrentConversation(); // Sauvegarder après chaque message
+        this.saveCurrentConversation();
         this.scrollToBottom();
 
-        fetch('http://localhost:3000/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt: content }),
-        })
-            .then(res => res.json())
-            .then(data => {
-                this.messages.push({ id: crypto.randomUUID(), role: 'bot', text: data.answer, ts: Date.now() });
-                this.isTyping = false;
-                this.saveCurrentConversation(); // Sauvegarder après la réponse
-                this.scrollToBottom();
-            })
-            .catch(err => {
-                console.error(err);
-                this.messages.push({ id: crypto.randomUUID(), role: 'bot', text: 'Le bot est indisponible.', ts: Date.now() });
+        // Détecter les intentions pour répondre intelligemment
+        this.handleUserIntent(content);
+    }
+
+    private handleSmartResponse(data: any) {
+
+        // 1️⃣ Si backend renvoie des jobs
+        if (data.jobs) {
+          const results = data.jobs.slice(0, 10).map((job: Job, i: number) =>
+            `${i + 1}. **${job.title}**\n${job.company} | ${job.location}\n${job.type} | ${job.salary}`
+          ).join('\n\n');
+      
+          this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: `🎯 Résultats trouvés :\n\n${results}\n\nTu veux un matching personnalisé ?`,
+            ts: Date.now(),
+            jobMatches: data.jobs
+          });
+        }
+      
+        // 2️⃣ Si backend renvoie un message normal
+        else if (data.answer) {
+          this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: data.answer,
+            ts: Date.now()
+          });
+        }
+      
+        // 3️⃣ Si backend renvoie un job spécifique
+        else if (data.job) {
+          this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: `📌 ${data.job.title}\n${data.job.description}`,
+            ts: Date.now()
+          });
+        }
+      
+        this.isTyping = false;
+        this.saveCurrentConversation();
+        this.scrollToBottom();
+      }
+      
+
+      private handleUserIntent(userMessage: string) {
+        // Au lieu de détecter les intentions côté front, 
+        // on laisse le backend s'en charger avec l'IA
+        this.sendToSmartBackend(userMessage);
+    }
+    
+    private sendToSmartBackend(message: string) {
+        // Convertir les messages Angular en format conversation pour le backend
+        const conversation = this.messages.map(msg => ({
+            role: msg.role,
+            content: msg.text
+        }));
+    
+        this.api.sendSmartMessage(conversation, message, this.userProfile).subscribe({
+            next: (response) => {
+                // Le backend peut renvoyer soit des jobs, soit une réponse textuelle
+                if (response.jobs) {
+                    this.displayJobs(response.jobs);
+                } else if (response.job) {
+                    this.displayJobDetails(response.job);
+                } else if (response.answer) {
+                    this.messages.push({
+                        id: crypto.randomUUID(),
+                        role: 'bot',
+                        text: response.answer,
+                        ts: Date.now()
+                    });
+                }
+                
                 this.isTyping = false;
                 this.saveCurrentConversation();
                 this.scrollToBottom();
+            },
+            error: (err) => {
+                console.error('Erreur chat-smart:', err);
+                this.messages.push({
+                    id: crypto.randomUUID(),
+                    role: 'bot',
+                    text: 'Désolé, une erreur s\'est produite.',
+                    ts: Date.now()
+                });
+                this.isTyping = false;
+                this.scrollToBottom();
+            }
+        });
+    }
+    
+    private displayJobs(jobs: Job[]) {
+        if (jobs.length === 0) {
+            this.messages.push({
+                id: crypto.randomUUID(),
+                role: 'bot',
+                text: `Aucune offre trouvée 😔\n\nEssaie de modifier ta recherche.`,
+                ts: Date.now()
             });
+            return;
+        }
+    
+        const jobsList = jobs.slice(0, 10).map((job, i) => 
+            `${i + 1}. **${job.title}**\n   ${job.company} | ${job.location}\n   ${job.type} | ${job.salary}`
+        ).join('\n\n');
+    
+        this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: `🎯 J'ai trouvé **${jobs.length} offres** :\n\n${jobsList}\n\nVeux-tu plus de détails ?`,
+            ts: Date.now(),
+            jobMatches: jobs.slice(0, 10)
+        });
+    }
+    
+    private displayJobDetails(job: Job) {
+        const benefits = job.benefits?.join('\n   • ') || 'Non spécifié';
+        const techStack = job.tech_stack ? this.formatTechStack(job.tech_stack) : '';
+        const projects = job.projects?.map(p => `   • ${p}`).join('\n') || '';
+        const interviewProcess = job.interview_process?.map((step, i) => `   ${i + 1}. ${step}`).join('\n') || '';
+        
+        this.messages.push({
+            id: crypto.randomUUID(),
+            role: 'bot',
+            text: `📋 **${job.title}** chez ${job.company}\n\n` +
+                  `📍 **Localisation:** ${job.location}${job.office_location ? ` (${job.office_location})` : ''}\n` +
+                  `💼 **Type:** ${job.type} - ${job.duration}\n` +
+                  `⏰ **Rythme:** ${job.rhythm}\n` +
+                  `💰 **Salaire:** ${job.salary}\n` +
+                  `👥 **Équipe:** ${job.team || 'Non spécifié'}\n` +
+                  `🏢 **Taille:** ${job.company_size} | Secteur: ${job.sector}\n\n` +
+                  
+                  `**📝 Description:**\n${job.description}\n\n` +
+                  
+                  `**🎯 Compétences requises:**\n${job.skills_required.join(', ')}\n\n` +
+                  
+                  `**🌟 Soft skills:**\n${job.soft_skills.join(', ')}\n\n` +
+                  
+                  `**🎁 Avantages:**\n   • ${benefits}\n\n` +
+                  
+                  (projects ? `**🚀 Projets sur lesquels tu travailleras:**\n${projects}\n\n` : '') +
+                  
+                  (techStack ? `**💻 Stack technique:**\n${techStack}\n\n` : '') +
+                  
+                  (job.remote_policy ? `**🏠 Télétravail:** ${job.remote_policy}\n\n` : '') +
+                  
+                  (interviewProcess ? `**🎤 Processus de recrutement:**\n${interviewProcess}\n\n` : '') +
+                  
+                  (job.start_date ? `**📅 Démarrage:** ${job.start_date}\n\n` : '') +
+                  
+                  (job.company_culture ? `**🌈 Culture d'entreprise:** ${job.company_culture}\n\n` : '') +
+                  
+                  `**📧 Contact:** ${job.contact_email}` +
+                  (job.application_url ? `\n🔗 [Postuler ici](${job.application_url})` : ''),
+            ts: Date.now()
+        });
+    }
+    
+    // Fonction helper pour formater la tech stack
+    private formatTechStack(techStack: any): string {
+        let result = '';
+        for (const [category, technologies] of Object.entries(techStack)) {
+            if (Array.isArray(technologies) && technologies.length > 0) {
+                const categoryName = category.replace(/_/g, ' ').toUpperCase();
+                result += `   **${categoryName}:** ${technologies.join(', ')}\n`;
+            }
+        }
+        return result;
     }
 
     onKeyDown(ev: KeyboardEvent) {
@@ -198,10 +369,6 @@ export class ChatbotComponent {
 
     reset() {
         this.createNewConversation();
-    }
-
-    toggleSidebar() {
-        this.showSidebar = !this.showSidebar;
     }
 
     triggerUpload() {
@@ -227,11 +394,11 @@ export class ChatbotComponent {
             this.messages.push({
                 id: crypto.randomUUID(),
                 role: 'bot',
-                text:
-                    "Parfait. J'ai reçu ton CV.\nJe vais en extraire : compétences, stack, projets, soft skills, et contraintes.\n\nQuestion : tu vises quel type d’entreprise ? (startup / ESN / grand groupe)",
+                text: "Parfait ! J'ai reçu ton CV 📄\n\nJe vais en extraire : compétences, projets, et expériences.\n\nQuestion : tu vises quel type d'entreprise ? (startup / ESN / grand groupe)",
                 ts: Date.now(),
             });
             this.isTyping = false;
+            this.saveCurrentConversation();
             this.scrollToBottom();
         }, 700);
 
@@ -244,5 +411,4 @@ export class ChatbotComponent {
             if (el) el.scrollTop = el.scrollHeight;
         }, 0);
     }
-
 }
